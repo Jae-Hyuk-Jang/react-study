@@ -32,4 +32,4 @@ const TodoItem = ({ id, isDone, content, date, onUpdate, onDelete }) => {
 //   return true;
 // });
 
-export default memo(Todo);
+export default memo(TodoItem);
