@@ -61,6 +61,7 @@ function App() {
   const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: "UPDATE",
+      id,
       data: {
         id,
         createdDate,
@@ -72,7 +73,7 @@ function App() {
 
   const onDelete = (id) => {
     dispatch({
-      tpye: "DELETE",
+      type: "DELETE",
       id,
     });
   };
