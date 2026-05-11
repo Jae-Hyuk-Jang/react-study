@@ -1,13 +1,11 @@
 import "./App.css";
 import { useReducer, useRef, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import Diary from "./pages/Diary";
 import Home from "./pages/Home";
+import Diary from "./pages/Diary";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
 import Notfound from "./pages/Notfound";
-import Button from "./components/Button";
-import { getEmotionImage } from "./util/get-emotion-image";
 
 const mockData = [
   {
@@ -30,10 +28,14 @@ function reducer(state, action) {
       return [action.data, ...state];
     case "UPDATE":
       return state.map((item) =>
-        String(item.id) === String(action.id) ? action.data : item,
+        String(item.id) === String(action.data.id)
+          ? action.data
+          : item
       );
     case "DELETE":
-      return state.filter((item) => String(item.id) !== String(action.id));
+      return state.filter(
+        (item) => String(item.id) !== String(action.id)
+      );
     default:
       return state;
   }
@@ -46,6 +48,7 @@ function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(3);
 
+  // 새로운 일기 추가
   const onCreate = (createdDate, emotionId, content) => {
     dispatch({
       type: "CREATE",
@@ -58,10 +61,10 @@ function App() {
     });
   };
 
+  // 기존 일기 수정
   const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: "UPDATE",
-      id,
       data: {
         id,
         createdDate,
@@ -71,6 +74,7 @@ function App() {
     });
   };
 
+  // 기존 일기 삭제
   const onDelete = (id) => {
     dispatch({
       type: "DELETE",
@@ -81,7 +85,13 @@ function App() {
   return (
     <>
       <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
+        <DiaryDispatchContext.Provider
+          value={{
+            onCreate,
+            onUpdate,
+            onDelete,
+          }}
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
